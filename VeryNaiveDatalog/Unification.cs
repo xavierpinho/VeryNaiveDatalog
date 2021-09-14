@@ -40,7 +40,7 @@ namespace VeryNaiveDatalog
         }
 
         // Attempt to unify an atom against a collection of atoms under a given environment.
-        // Returning empty means to unification was possible.
+        // Returning empty means no unification was possible.
         public static IEnumerable<Substitution> UnifyWith(this Atom atom, IEnumerable<Atom> kb, Substitution env)
         {
             var a1 = atom.Apply(env);

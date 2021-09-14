@@ -29,13 +29,13 @@ namespace VeryNaiveDatalog
         // Repeatedly applies rules to atoms until no more atoms are derivable.
         private static IEnumerable<Atom> Evaluate(this IEnumerable<Atom> kb, IEnumerable<Rule> rules)
         {
-            int prevSize, nextSize;
+            bool productive;
             do
             {
-                prevSize = kb.Count();
-                kb = rules.Apply(kb).Union(kb);
-                nextSize = kb.Count();
-            } while (prevSize < nextSize);
+                var nextKb = rules.Apply(kb).ToHashSet(); // ToHashSet for performance
+                productive = nextKb.Except(kb).Any();
+                kb = kb.Union(nextKb);
+            } while (productive);
 
             return kb;
         }

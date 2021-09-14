@@ -1,3 +1,6 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using NUnit.Framework;
 
 namespace VeryNaiveDatalog.Test
@@ -36,5 +39,54 @@ namespace VeryNaiveDatalog.Test
             
             CollectionAssert.AreEquivalent(expected, result);
         }
+
+        [Test]
+        public void Evaluator_Parsing_Example()
+        {
+            // Helpers
+            var i = new Variable("i");
+            var j = new Variable("j");
+            var k = new Variable("k");
+            Func<int, Symbol> s = i => new Symbol(i.ToString());
+            Func<int, Atom> eps = i => new Atom("Epsilon", s(i), s(i));
+
+            // Grammar
+            // A ::= <epsilon> | A A | L B
+            // B ::= A R
+            // L ::= '('
+            // R ::= ')'
+            var a0 = new Rule(new Atom("A", i, j), new Atom("Epsilon", i, j));
+            var a1 = new Rule(new Atom("A", i, j), new Atom("A", i, k), new Atom("A", k, j));
+            var a2 = new Rule(new Atom("A", i, j), new Atom("L", i, k), new Atom("B", k, j));
+            var b0 = new Rule(new Atom("B", i, j), new Atom("A", i, k), new Atom("R", k, j));
+
+            var rules = new[] { a0, a1, a2, b0 };
+
+            IEnumerable<Atom> Lex(Char c, int i)
+            {
+                yield return eps(i);
+                if ('(' == c)
+                {
+                    yield return new Atom("L", s(i), s(i + 1));
+                }
+
+                if (')' == c)
+                {
+                    yield return new Atom("R", s(i), s(i + 1));
+                }
+            }
+
+            // Test case: can we find of derivation of A from
+            // offset 0 to offset src.Length?
+            var src = "(()())()";
+            var facts = src.SelectMany(Lex);
+            var query = new Atom("A", s(0), s(src.Length));
+            var result = facts.Query(query, rules);
+
+            // The resulting substitution is empty since there's no
+            // variables in the query.
+            Assert.AreEqual(1, result.Count());
+        }
+        
     }
 }
