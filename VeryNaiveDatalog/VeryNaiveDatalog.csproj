@@ -3,6 +3,15 @@
     <PropertyGroup>
         <TargetFramework>net5.0</TargetFramework>
         <Nullable>enable</Nullable>
+        <Version>1.1.1</Version>
+        <PackageId>org.xavierp.VeryNaiveDatalog</PackageId>
+        <Authors>xavierp</Authors>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+        <PackageLicenseExpression>Unlicense</PackageLicenseExpression>
+        <PackageProjectUrl>https://github.com/xavierpinho/VeryNaiveDatalog</PackageProjectUrl>
+        <RepositoryUrl>https://github.com/xavierpinho/VeryNaiveDatalog</RepositoryUrl>
+        <PackageTags>datalog</PackageTags>
+        <Description>Naive, bottom-up Datalog semantics in about 200 lines</Description>
     </PropertyGroup>
 
 </Project>
