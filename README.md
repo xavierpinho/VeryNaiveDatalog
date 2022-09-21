@@ -1,7 +1,7 @@
 # VeryNaiveDatalog
 
 This repository contains a naive, bottom-up implementation of Datalog's
-semantics in about 200 lines of C# (.NET 5) code.
+semantics, in about 200 lines of C# 10 code.
 
 ## Introduction
 
